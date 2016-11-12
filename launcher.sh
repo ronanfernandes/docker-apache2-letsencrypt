@@ -7,10 +7,10 @@ then
     DOMAIN_CMD="-d $(echo $LETS_ENCRYPT_DOMAINS | sed 's/,/ -d /')"
   fi
 
-  certbot -n certonly --agree-tos --standalone -t -m "$LETS_ENCRYPT_EMAIL" -d $(hostname -f) $DOMAIN_CMD
+  certbot-auto -n certonly --agree-tos --standalone -t -m "$LETS_ENCRYPT_EMAIL" -d $(hostname -f) $DOMAIN_CMD
   ln -s /etc/letsencrypt/live/$(hostname -f) /etc/letsencrypt/certs
 else
-  certbot renew
+  certbot-auto renew
 fi
 
 echo "Launcing apache2."
