@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 echo "Checking certificates ( if /etc/letsencrypt/live/$(hostname -f)/privkey.pem exist )."
 if [[ ! -e /etc/letsencrypt/live/$(hostname -f)/privkey.pem ]]
