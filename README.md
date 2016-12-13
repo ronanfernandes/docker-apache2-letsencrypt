@@ -32,6 +32,8 @@ apache2:
   environment:
     LETS_ENCRYPT_EMAIL: "your@email.com"
     LETS_ENCRYPT_DOMAINS: "yourserver.com,site2.yourserver.com"
+  labels:
+    io.enonic.backup.data: "/var/jenkins_home,/var/www/html/repo"
 letsencryptstore:
   image: busybox
   volumes:
