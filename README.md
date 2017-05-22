@@ -1,5 +1,16 @@
-# Apache2-letsencrypt
-This is a apache2 docker image with letsencrypt implemented. Before starting the apache2 deamon, this image will check if certificates for the hostname domain. If there is a certificate, it will do a `certbot renew` command to check if the certificates needs to renew it and renew it when needed. If the certificate is not the it will create it and other domains in the environment variable `LETS_ENCRYPT_DOMAINS` with the email in the `LETS_ENCRYPT_EMAIL` variable as the lets encrypt registration and recovery contact. The environment variable `LETS_ENCRYPT_DOMAINS` can be a comma separated list of domains that should be in the certificate.
+# Apache2 with Let's Encrypt
+This is a apache2 docker image with letsencrypt implemented.
+Before starting the apache2 deamon, this image will check if certificates for
+the hostname domain exist.
+If certifacates exists, it will do a `certbot renew` command to check if
+the certificates needs a renewal and renew it if needed.
+
+In the case that certifacates do not exist, it will create it for the domains
+in the environment variable `LETS_ENCRYPT_DOMAINS`
+with the email in the `LETS_ENCRYPT_EMAIL` variable as the Let's Encrypt
+registration and recovery contact.
+The environment variable `LETS_ENCRYPT_DOMAINS` can be a comma separated list
+of domains that should be in the certificate.
 
 
 ## Setup
@@ -44,24 +55,24 @@ letsencryptstore:
 - Add a vhost config file like this.
 ```
 <VirtualHost *:80>
-  ServerName your.host.com
-	DocumentRoot /var/www/html/
+    ServerName your.host.com
+    DocumentRoot /var/www/html/
 
-  #RewriteEngine on
-	#RewriteRule ^/(.*) https://your.host.com/$1 [L,R=301]
+    #RewriteEngine on
+    #RewriteRule ^/(.*) https://your.host.com/$1 [L,R=301]
 
 </VirtualHost>
 
 <VirtualHost *:443>
-  ServerName your.host.com
-  DocumentRoot /var/www/html/
-	SSLEngine on
-	SSLProtocol all -SSLv2 -SSLv3
-	SSLCipherSuite ALL:!ADH:!EXPORT:!SSLv2:!RC4:RC4+RSA:+HIGH:+MEDIUM:+LOW
-  SSLCertificateFile /etc/letsencrypt/certs/cert.pem
-  SSLCertificateKeyFile /etc/letsencrypt/certs/privkey.pem
-  SSLCertificateChainFile /etc/letsencrypt/certs/chain.pem
-	SetEnvIf User-Agent ".*MSIE.*" nokeepalive ssl-unclean-shutdown
+    ServerName your.host.com
+    DocumentRoot /var/www/html/
+    SSLEngine on
+    SSLProtocol all -SSLv2 -SSLv3
+    SSLCipherSuite ALL:!ADH:!EXPORT:!SSLv2:!RC4:!RC4+RSA:!EDH-RSA-DES-CBC-SHA:!DES-CBC3-SHA:!DES-CBC-SHA:!ECDHE-RSA-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:+HIGH:+MEDIUM:+LOW
+    SSLCertificateFile /etc/letsencrypt/certs/cert.pem
+    SSLCertificateKeyFile /etc/letsencrypt/certs/privkey.pem
+    SSLCertificateChainFile /etc/letsencrypt/certs/chain.pem
+    SetEnvIf User-Agent ".*MSIE.*" nokeepalive ssl-unclean-shutdown
 
 </VirtualHost>
 
@@ -73,3 +84,9 @@ FROM enoniccloud/apache2-letsencrypt
 COPY myvhost.conf /etc/apache2/sites-enabled/myvhost.conf
 
 ```
+
+## Troubleshooting
+The most common problem happens when this is run the first time and the user can
+make a input mistake (like wrong domain name etc.). And fixing it may not
+remove the old certificate with mistakes in it. Just delete everything in 
+/etc/letsencrypt/
