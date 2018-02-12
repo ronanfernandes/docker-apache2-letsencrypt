@@ -92,7 +92,7 @@ FROM enoniccloud/apache2-letsencrypt
 
 COPY myvhost.conf /etc/apache2/sites-enabled/myvhost.conf
 
-a2enmod headers
+RUN a2enmod headers
 
 ```
 
