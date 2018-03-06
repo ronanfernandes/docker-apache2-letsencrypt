@@ -1,8 +1,8 @@
 # Apache2 with Let's Encrypt
 This is a apache2 docker image with letsencrypt implemented.
-Before starting the apache2 deamon, this image will check if certificates for
+Before starting the apache2 daemon, this image will check if certificates for
 the hostname domain exist.
-If certifacates exists, it will do a `certbot renew` command to check if
+If certificates exists, it will do a `certbot renew` command to check if
 the certificates needs a renewal and renew it if needed.
 
 In the case that certifacates do not exist, it will create it for the domains
@@ -28,7 +28,7 @@ docker run -d --volumes-from letsencryptstore --restart always \
 ```
 
 ### Setting up with docker-compose
-There are multiple ways of setting up a docker-compose, here is an example of how to set it up with custom configuration.
+There are multiple ways of setting up with docker-compose, here is an example of how to set it up with custom configuration.
 - Add the following code to your docker-compose setup:
 ```
 apache2:
@@ -97,7 +97,11 @@ RUN a2enmod headers
 ```
 
 ## Troubleshooting
-The most common problem happens when this is run the first time and the user can
-make a input mistake (like wrong domain name etc.). And fixing it may not
-remove the old certificate with mistakes in it. Just delete everything in
-/etc/letsencrypt/
+The most common problem happens when this is run the first time and the user makes a
+configuration mistake (like wrong domain name etc.), and an invalid certificate is generated. And then fixing the config error will not necessarily remove the old certificate with mistakes in it. Just delete everything in
+/etc/letsencrypt/ or delete the letsencryptstore (while apache is stopped)
+```
+docker-compose stop apache2
+docker-compose rm letsencryptstore apache2
+docker-compose up -d --no-deps apache2
+```
