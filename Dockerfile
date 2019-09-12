@@ -1,14 +1,21 @@
-FROM enoniccloud/apache2
+FROM enoniccloud/apache2:u16.04
 
 LABEL creator="Erik Kaareng-Sunde <https://github.com/drerik>"
+LABEL maintainer="Diego Pasten <https://github.com/diegopasten>"
+
+ENV TZ=Europe/Oslo
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN rm /etc/apache2/sites-enabled/000-default.conf \
   && rm /etc/apache2/sites-enabled/default-ssl.conf \
-  && apt-get update && apt-get -y install curl && apt-get clean \
-  && curl -o /usr/local/bin/certbot-auto https://dl.eff.org/certbot-auto && \
-  chmod +x /usr/local/bin/certbot-auto && \
-  certbot-auto --os-packages-only -n
-
+  && apt-get update -y \
+  && apt-get -y install curl -y \
+  && apt-get install software-properties-common -y \
+  && add-apt-repository universe -y \
+  && add-apt-repository ppa:certbot/certbot -y \
+  && apt-get update -y\
+  && apt-get clean -y
+RUN apt-get install certbot python-certbot-apache -y
 
 COPY index.html /var/www/html/index.html
 COPY launcher.sh /usr/local/bin/launcher.sh
