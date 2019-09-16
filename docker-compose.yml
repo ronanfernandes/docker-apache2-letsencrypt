@@ -1,19 +1,19 @@
-apache2:
-  build: .
-  hostname: www.yourserver.com
-  restart: always
-  volumes_from:
-    - letsencryptstore
-  ports:
-    - "80:80"
-    - "443:443"
-  environment:
-    LETS_ENCRYPT_EMAIL: "your@email.com"
-    LETS_ENCRYPT_DOMAINS: "yourserver.com,site2.yourserver.com"
-  labels:
-    io.enonic.backup.data: "/etc/letsencrypt,/var/lib/letsencrypt"
-letsencryptstore:
-  image: busybox
-  volumes:
-    - "/etc/letsencrypt"
-    - "/var/lib/letsencrypt"
+version: '3'
+services:
+  apache2:
+    build: .
+    hostname: yourserver.com
+    restart: always
+    volumes:
+      - etcletsencrypt:/etc/letsencrypt
+      - varletsencrypt:/var/lib/letsencrypt
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      LETS_ENCRYPT_EMAIL: "your@email.com"
+      LETS_ENCRYPT_DOMAINS: "yourserver.com,www.yourserver.com,site2.yourserver.com"
+
+volumes:
+  varletsencrypt:
+  etcletsencrypt:
