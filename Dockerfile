@@ -9,7 +9,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN rm /etc/apache2/sites-enabled/000-default.conf \
   && rm /etc/apache2/sites-enabled/default-ssl.conf \
   && apt-get update -y \
-  && apt-get -y install curl -y \
+  && apt-get -y install curl vim -y \
   && apt-get install software-properties-common -y \
   && add-apt-repository universe -y \
   && add-apt-repository ppa:certbot/certbot -y \
