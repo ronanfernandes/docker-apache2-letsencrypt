@@ -2,7 +2,7 @@ version: '3'
 services:
   apache2:
     build: .
-    hostname: yourserver.com
+    hostname: api.carteirarica.com.br
     restart: always
     volumes:
       - etcletsencrypt:/etc/letsencrypt
@@ -11,8 +11,8 @@ services:
       - "80:80"
       - "443:443"
     environment:
-      LETS_ENCRYPT_EMAIL: "your@email.com"
-      LETS_ENCRYPT_DOMAINS: "yourserver.com,www.yourserver.com,site2.yourserver.com"
+      LETS_ENCRYPT_EMAIL: "contato@carteirarica.com.br"
+      LETS_ENCRYPT_DOMAINS: "api.carteirarica.com.br"
 
 volumes:
   varletsencrypt:

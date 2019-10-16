@@ -3,7 +3,7 @@ FROM enoniccloud/apache2:u19.04
 LABEL creator="Erik Kaareng-Sunde <https://github.com/drerik>"
 LABEL maintainer="Diego Pasten <https://github.com/diegopasten>"
 
-ENV TZ=Europe/Oslo
+ENV TZ=America/Sao_Paulo
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN rm /etc/apache2/sites-enabled/000-default.conf \
