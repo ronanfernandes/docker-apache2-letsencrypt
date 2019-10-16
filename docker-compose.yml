@@ -8,7 +8,7 @@ services:
       - etcletsencrypt:/etc/letsencrypt
       - varletsencrypt:/var/lib/letsencrypt
     ports:
-      - "80:80"
+      - "8070:80"
       - "443:443"
     environment:
       LETS_ENCRYPT_EMAIL: "contato@carteirarica.com.br"
